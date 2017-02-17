@@ -1,0 +1,75 @@
+#org_Name{
+	-fx-text-fill: #2c3e50;
+	-fx-font: 30px serif;
+	-fx-font-weight: bold;
+}
+#header{
+	-fx-background-color: rgba(224,255,255);
+}
+#exitButton{
+	-fx-background-color:
+        linear-gradient(#95a5a6, #7f8c8d),
+        radial-gradient(center 50% -40%, radius 200%, #34495e 45%, #2c3e50 50%);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: white;
+	-fx-font: 35px serif;
+	-fx-background-radius: 15;
+	-fx-font-weight: bold;
+}
+#exitButton:hover{
+	-fx-text-fill: #40E0D0;
+}
+#homeGlass{
+	-fx-background-color: rgba(224,255,255,0.4);
+	-fx-background-radius: 15;
+}
+#footer{
+	-fx-background-color: rgba(224,255,255);
+	-fx-font: 18px serif;
+	-fx-font-weight: bold;
+}
+#info{
+	-fx-text-fill: #2c3e50;
+}
+#bar{
+    -fx-background-color: 
+        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
+        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
+        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
+    -fx-background-radius: 9,8,5,4,3;
+    -fx-padding: 5 10 5 10;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+    -fx-font-weight: bold;
+}
+.menu .label
+{
+    -fx-text-fill: white;
+}
+.menu-item .label{
+	-fx-text-fill: black;
+}
+.menu .label:hover{
+	-fx-text-fill: #40E0D0;
+}
+#item{
+	-fx-font: 20px serif;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+#menu{
+	-fx-background-color: 
+        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
+        linear-gradient(#020b02, #3a3a3a),
+        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
+        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
+        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
+    -fx-background-radius: 9,8,5,4,3;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+    -fx-font-weight: bold;
+}
