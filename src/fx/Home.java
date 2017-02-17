@@ -32,9 +32,9 @@ public class Home {
 	Button exitButton;
 	MenuBar addBar, exchangeBar, reportBar;
 	Menu addMenu, exchangeMenu, reportMenu;
-	MenuItem dailyAdd, monthlyAdd, yearlyAdd, newAdd, dailyExchange, monthlyExchange, yearlyExchange, newExchange,
+	MenuItem dailyAdd, monthlyAdd, yearlyAdd, dailyExchange, monthlyExchange, yearlyExchange,
 			dailyReport, monthlyReport, yearlyReport;
-	SeparatorMenuItem separatorAdd, separatorExchange;
+	SeparatorMenuItem separator1, separator2;
 	
 	public Home(){
 		///////////////////Header Components/////////////////////
@@ -62,16 +62,6 @@ public class Home {
 		
 		addMenu=new Menu("اضافه صنف");
 		addMenu.setId("menu");
-		dailyAdd=new MenuItem("ما تمت اضافته خلال اليوم");
-		dailyAdd.setId("item");
-		monthlyAdd=new MenuItem("ما تمت اضافته خلال الشهر");
-		monthlyAdd.setId("item");
-		yearlyAdd=new MenuItem("ما تمت اضافته خلال العام");	
-		yearlyAdd.setId("item");
-		separatorAdd=new SeparatorMenuItem();
-		newAdd=new MenuItem("اضافه جديد");
-		newAdd.setId("item");
-		addMenu.getItems().addAll(dailyAdd, monthlyAdd, yearlyAdd, separatorAdd, newAdd);
 		addBar=new MenuBar();
 		addBar.getMenus().add(addMenu);
 		addBar.setId("bar");
@@ -79,16 +69,6 @@ public class Home {
 		
 		exchangeMenu=new Menu("صرف صنف");
 		exchangeMenu.setId("menu");
-		dailyExchange=new MenuItem("ما تم صرفه خلال اليوم");
-		dailyExchange.setId("item");
-		monthlyExchange=new MenuItem("ما تم صرفه خلال الشهر");
-		monthlyExchange.setId("item");
-		yearlyExchange=new MenuItem("ما تم صرفه خلال العام");
-		yearlyExchange.setId("item");
-		newExchange=new MenuItem("صرف جديد");
-		newExchange.setId("item");
-		separatorExchange=new SeparatorMenuItem();
-		exchangeMenu.getItems().addAll(dailyExchange, monthlyExchange, yearlyExchange, newExchange);
 		exchangeBar=new MenuBar();
 		exchangeBar.getMenus().add(exchangeMenu);
 		exchangeBar.setId("bar");
@@ -97,13 +77,28 @@ public class Home {
 		reportMenu=new Menu("رؤيه تقرير");
 		reportMenu.setId("menu");
 		
-		dailyReport=new MenuItem("ما حدث خلال اليوم");
+		dailyReport=new MenuItem("تقرير يومى");
 		dailyReport.setId("item");
-		monthlyReport=new MenuItem("ما حدث خلال الشهر");
+		monthlyReport=new MenuItem("تقرير شهرى");
 		monthlyReport.setId("item");
-		yearlyReport=new MenuItem("ما حدث خلال العام");
+		yearlyReport=new MenuItem("تقرير سنوى");
 		yearlyReport.setId("item");
-		reportMenu.getItems().addAll(dailyReport, monthlyReport, yearlyReport);
+		separator1=new SeparatorMenuItem();
+		dailyAdd=new MenuItem("تقرير اضافه يومى");
+		dailyAdd.setId("item");
+		monthlyAdd=new MenuItem("تقرير اضافه شهرى");
+		monthlyAdd.setId("item");
+		yearlyAdd=new MenuItem("تقرير اضافه سنوى");	
+		yearlyAdd.setId("item");
+		separator2=new SeparatorMenuItem();
+		dailyExchange=new MenuItem("تقرير صرف يومى");
+		dailyExchange.setId("item");
+		monthlyExchange=new MenuItem("تقرير صرف شهرى");
+		monthlyExchange.setId("item");
+		yearlyExchange=new MenuItem("تقرير صرف سنوى");
+		yearlyExchange.setId("item");
+		reportMenu.getItems().addAll(dailyReport, monthlyReport, yearlyReport, separator1, dailyAdd, monthlyAdd, yearlyAdd,
+									separator2, dailyExchange, monthlyExchange, yearlyExchange);
 		reportBar=new MenuBar();
 		reportBar.getMenus().add(reportMenu);
 		reportBar.setId("bar");
