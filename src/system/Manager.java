@@ -15,14 +15,14 @@ public class Manager {
 	public static boolean addNewItem(String name,float sellPrice,float buyPrice,float minBuy,float minSell,float quantity,String expireDate,String suplaierName){
 		if(DB.saveItem(name, sellPrice, buyPrice, minBuy, minSell, quantity, expireDate, suplaierName)){
 			Manager.saveReport("تمت اضافه صنف جديد بنجاح. ( الاسم:"+name+" \\ الكميه:"+quantity+" \\ المورد:"+suplaierName+" )");
-			Manager.saveBuyReport(name, suplaierName,quantity);
+			Manager.saveBuyReport(name, suplaierName, quantity, quantity, quantity);
 			return true;
 		}
 		return false;
 	}
-	public static boolean addQuantityToExistingItem(String name,float quantity,String expireDate,String supplierName){
+	public static boolean addQuantityToExistingItem(String name,float quantity,float itemPrice,float quantityPrice,String expireDate,String supplierName){
 		if(DB.addToItem(name, quantity, expireDate, supplierName)){
-			Manager.saveBuyReport(name, supplierName, quantity);
+			Manager.saveBuyReport(name, supplierName, itemPrice, quantity, quantityPrice);
 			Manager.saveReport("تمت اضافه كميه : "+quantity+" الي صنف :"+name+" من المورد : "+supplierName+"");
 			return true;
 		}
@@ -88,11 +88,11 @@ public class Manager {
 			}
 		}).start();
 	}
-	private static void saveBuyReport(String item,String seller,float quantity){
+	private static void saveBuyReport(String item,String seller,float itemPrice,float quantity,float quantityPrice){
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				DB.addBuyReport(item, seller, quantity);
+				DB.addBuyReport(item, seller, itemPrice, quantity, quantityPrice);
 			}
 		}).start();
 	}
