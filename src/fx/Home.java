@@ -1,5 +1,7 @@
 package fx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,12 +31,14 @@ public class Home {
 	ImageView layoutBackground;
 	///////////////////Home Glass Objects//////////////////////
 	GridPane homeGlass;
-	Button exitButton;
+	Button exitButton, addButton, exchangeButton;
 	MenuBar addBar, exchangeBar, reportBar;
-	Menu addMenu, exchangeMenu, reportMenu;
+	Menu reportMenu;
 	MenuItem dailyAdd, monthlyAdd, yearlyAdd, dailyExchange, monthlyExchange, yearlyExchange,
 			dailyReport, monthlyReport, yearlyReport;
 	SeparatorMenuItem separator1, separator2;
+	///////////////////Add Glass Objects/////////////////////
+	GridPane addGlass;
 	
 	public Home(){
 		///////////////////Header Components/////////////////////
@@ -60,22 +64,25 @@ public class Home {
 			}
 		});
 		
-		addMenu=new Menu("اضافه صنف");
-		addMenu.setId("menu");
-		addBar=new MenuBar();
-		addBar.getMenus().add(addMenu);
-		addBar.setId("bar");
-		addBar.setCursor(Cursor.HAND);
+		addButton=new Button("اضافه صنف");
+		addButton.setId("menu");
+		addButton.setCursor(Cursor.HAND);
+		addButton.setPadding(new Insets(20,30,20,30));
 		
-		exchangeMenu=new Menu("صرف صنف");
-		exchangeMenu.setId("menu");
-		exchangeBar=new MenuBar();
-		exchangeBar.getMenus().add(exchangeMenu);
-		exchangeBar.setId("bar");
-		exchangeBar.setCursor(Cursor.HAND);
+		exchangeButton=new Button("اضافه صنف");
+		exchangeButton.setId("menu");
+		exchangeButton.setCursor(Cursor.HAND);
+		exchangeButton.setPadding(new Insets(20,30,20,30));
+		
 		
 		reportMenu=new Menu("رؤيه تقرير");
 		reportMenu.setId("menu");
+		reportMenu.showingProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				System.out.println("2");
+			}         
+		});
 		
 		dailyReport=new MenuItem("تقرير يومى");
 		dailyReport.setId("item");
@@ -108,17 +115,23 @@ public class Home {
 		homeGlass.setPadding(new Insets(120,20,20,300));
 		homeGlass.setHgap(30);
 		homeGlass.setVgap(30);
-		homeGlass.setId("homeGlass");
+		homeGlass.setId("glass");
 		homeGlass.setMaxHeight(550);
 		homeGlass.setMaxWidth(1200);
 		homeGlass.setVgap(100);
 		
-		GridPane.setConstraints(addBar, 0,0);
-		GridPane.setConstraints(exchangeBar, 1,0);
+		GridPane.setConstraints(addButton, 0,0);
+		GridPane.setConstraints(exchangeButton, 1,0);
 		GridPane.setConstraints(reportBar, 2,0);
 		GridPane.setConstraints(exitButton, 1,1);
 		
-		homeGlass.getChildren().addAll(exitButton, addBar, exchangeBar, reportBar);
+		homeGlass.getChildren().addAll(exitButton, addButton, exchangeButton, reportBar);
+		////////////////////Add Glass Components/////////////////
+		addGlass=new GridPane();
+		addGlass.setId("glass");
+		addGlass.setMaxHeight(550);
+		addGlass.setMaxWidth(1200);
+		
 		///////////////////Footer Components/////////////////////
 		footer=new HBox();
 		info=new Label("Copyright © 2017 All Rights Reserved. A.S team.");

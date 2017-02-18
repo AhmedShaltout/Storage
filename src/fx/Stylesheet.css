@@ -19,7 +19,7 @@
 #exitButton:hover{
 	-fx-text-fill: #40E0D0;
 }
-#homeGlass{
+#glass{
 	-fx-background-color: rgba(224,255,255,0.4);
 	-fx-background-radius: 15;
 }
@@ -61,6 +61,7 @@
 	-fx-text-fill: black;
 }
 #menu{
+	-fx-text-fill: white;
 	-fx-background-color: 
         linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
         linear-gradient(#020b02, #3a3a3a),
@@ -72,4 +73,7 @@
     -fx-font-size: 30px;
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
     -fx-font-weight: bold;
+}
+#menu:hover{
+	-fx-text-fill: #40E0D0;
 }
