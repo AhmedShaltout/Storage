@@ -1,25 +1,15 @@
-package system;
-
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-
 import javax.swing.JOptionPane;
-import fx.Home;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import src.fx.Home;
 
 public class Main extends Application{
-<<<<<<< HEAD
-	
-	public static void main(String[] args)  {
-=======
 	public static void main(String[] args) {
->>>>>>> origin/master
 		launch(args);
 	}
 	
 	@Override
-<<<<<<< HEAD
 	public void start(Stage arg0){
 		String mac=getMac();
 		String activatedMac=DB.getAllowedMac();
@@ -45,9 +35,5 @@ public class Main extends Application{
         } 
         catch (Exception e) {}
 		return sb.toString();
-=======
-	public void start(Stage arg0) throws Exception {
-			new Home();
->>>>>>> origin/master
 	}
 }
