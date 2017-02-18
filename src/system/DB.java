@@ -17,7 +17,7 @@ abstract class DB {
 			Class.forName("com.mysql.jdbc.Driver");
 			return DriverManager.getConnection("jdbc:mysql://localhost:3306/Storage?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=false","root","");
 		}
-		catch(SQLException |ClassNotFoundException ex){
+		catch(SQLException |ClassNotFoundException e){
 			return null;
 		}
 	}
@@ -39,6 +39,7 @@ abstract class DB {
 			getConnection().createStatement().execute(sql);
 			return true;
 		} catch (SQLException | NullPointerException e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
@@ -52,7 +53,7 @@ abstract class DB {
 	}
 	
 	protected static boolean updateSupplierAmount(String name, float amount){
-		return editDataBase("update supplier set amount = (amount+"+amount+") where name='"+name+"'");
+		return editDataBase("update supplier set amount = "+amount+" where name='"+name+"'");
 	}
 	
 	protected static boolean deleteSupplier(String name){
@@ -100,8 +101,9 @@ abstract class DB {
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////Items////////////////////////////////////////////////////////////
 	protected static boolean saveItem(String name,float sellPrice,float buyPrice,float	minBuy,float minSell,float quantity,String expireDate,String suplaierName){
-		if(editDataBase("insert into item(name,sellPrice,buyPrice,minBuy,minSell,quantity) values('"+name+"',"+sellPrice+","+buyPrice+","+minBuy+","+quantity+")")&&
-				editDataBase("insert into expire_supplier(item,quantity,expireDate,suplaierName) values('"+name+"',"+quantity+",'"+expireDate+"','"+suplaierName+"')"))
+		if(editDataBase("insert into item(name,sellPrice,buyPrice,minBuy,minSell,quantity) "
+				+ "values('"+name+"',"+sellPrice+","+buyPrice+","+minBuy+","+minSell+","+quantity+")")&&editDataBase("insert into expire_supplier"
+						+ "(item,quantity,expireDate,suplaierName) values('"+name+"',"+quantity+",'"+expireDate+"','"+suplaierName+"')"))
 			return true;
 		return false;
 	}
@@ -158,12 +160,13 @@ abstract class DB {
 		editDataBase("insert into report(actionDate,action) values('"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+report+"')");
 	}
 	protected static void addSellReport(String item,String buyer,float itemPrice,float quantity,float quantityPrice){
-		editDataBase("insert into sold_report(date,item,buyer,itemPrice,quantity,quantityPrice) values('"
-				+ ""+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+buyer+"',"+itemPrice+","+quantity+","+quantityPrice+")");
+		editDataBase("insert into sold_report(date,item,buyer,itemPrice,quantity,quantityPrice) values("
+				+ "'"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+item+"','"+buyer+"',"+itemPrice+","+quantity+","+quantityPrice+")");
 	}
-	protected static void addBuyReport(String item,String seller,float itemPrice,float quantity,float quantityPrice) {
-		editDataBase("insert into baught_report(date,item,seller,itemPrice,quantity,quantityPrice) values('"
-				+ ""+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+seller+"',"+itemPrice+","+quantity+","+quantityPrice+")");
+	protected static void addBuyReport(String item,String seller,float quantity) {
+		editDataBase("insert into baught_report(date,item,seller,itemPrice,quantity,quantityPrice) values("
+				+ "'"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+item+"','"+seller+"',(select buyPrice from item where name='"+item+"'),"
+						+ ""+quantity+","+quantity+"*(select buyPrice from item where name='"+item+"'))");
 	}
 	protected static ArrayList<Report> getDailyReport(){
 		return report(LocalDateTime.now().toLocalDate().toString());
