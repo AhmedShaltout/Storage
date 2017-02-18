@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 
-public abstract class DB {
+abstract class DB {
 /**======================================== for connection ===================================**/
 	
 	private static Connection getConnection(){
@@ -15,7 +17,7 @@ public abstract class DB {
 			Class.forName("com.mysql.jdbc.Driver");
 			return DriverManager.getConnection("jdbc:mysql://localhost:3306/Storage?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true&useSSL=false","root","");
 		}
-		catch(SQLException |ClassNotFoundException ex){
+		catch(SQLException |ClassNotFoundException e){
 			return null;
 		}
 	}
@@ -37,31 +39,32 @@ public abstract class DB {
 			getConnection().createStatement().execute(sql);
 			return true;
 		} catch (SQLException | NullPointerException e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
 	///////////////////////////////////Suppliers///////////////////////////////////////////
-	public static boolean saveSupplier(String name,String address,String phoneNumber,float amount){
+	protected static boolean saveSupplier(String name,String address,String phoneNumber,float amount){
 		return editDataBase("insert into supplier(name,address,phoneNumber,amount) values('"+name+"','"+address+"','"+phoneNumber+"',"+amount+")");
 	}
 	
-	public static boolean updateSuplier(String name,String address,String phoneNumber,float amount){
+	protected static boolean updateSuplier(String name,String address,String phoneNumber,float amount){
 		return editDataBase("update supplier set address='"+address+"' , phoneNumber='"+phoneNumber+"', amount="+amount+" where name='"+name+"' ");
 	}
 	
-	public static boolean updateSupplierAmount(String name, float amount){
-		return editDataBase("update supplier set amount = (amount+"+amount+") where name='"+name+"'");
+	protected static boolean updateSupplierAmount(String name, float amount){
+		return editDataBase("update supplier set amount = "+amount+" where name='"+name+"'");
 	}
 	
-	public static boolean deleteSupplier(String name){
+	protected static boolean deleteSupplier(String name){
 		return editDataBase("delete from supplier where name='"+name+"'");
 	}
 	
-	public static Supplier getSupplier(String name){
+	protected static Supplier getSupplier(String name){
 		return createSupplier(select("select * from supplier where name='"+name+"'"));
 	}
 	
-	public static ArrayList<Supplier> getAllSupliers(){
+	protected static ArrayList<Supplier> getAllSupliers(){
 		ResultSet result=select("select * from supplier");
 		ArrayList<Supplier> suppliers=new ArrayList<>();
 		Supplier supplier;
@@ -78,12 +81,12 @@ public abstract class DB {
 		return null;
 	}
 	
-	public static boolean supplierExists(String name){
+	protected static boolean supplierExists(String name){
 		return editDataBase("update supplier set name='"+name+"' where name='"+name+"'");
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////System Password///////////////////////////////////////////////////////
-	public static String systemPassword(){
+	protected static String systemPassword(){
 		ResultSet result= select("select password from system");
 		try {
 			result.next();
@@ -92,46 +95,46 @@ public abstract class DB {
 		return null;
 	}
 	
-	public static boolean changeSystemPassword(String newPass){
+	protected static boolean changeSystemPassword(String newPass){
 		return editDataBase("update system set password ='"+newPass+"'");
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////Items////////////////////////////////////////////////////////////
-	public static boolean saveItem(String name,float sellPrice,float buyPrice,float	minBuy,float minSell,float quantity,String expireDate,String suplaierName){
-		if(editDataBase("insert into item(name,sellPrice,buyPrice,minBuy,minSell,quantity) values('"+name+"',"+sellPrice+","+buyPrice+","+minBuy+","+quantity+")")&&
-				editDataBase("insert into expire_supplier(item,quantity,expireDate,suplaierName) values('"+name+"',"+quantity+",'"+expireDate+"','"+suplaierName+"')"))
+	protected static boolean saveItem(String name,float sellPrice,float buyPrice,float	minBuy,float minSell,float quantity,String expireDate,String suplaierName){
+		if(editDataBase("insert into item(name,sellPrice,buyPrice,minBuy,minSell,quantity) "
+				+ "values('"+name+"',"+sellPrice+","+buyPrice+","+minBuy+","+minSell+","+quantity+")")&&editDataBase("insert into expire_supplier"
+						+ "(item,quantity,expireDate,suplaierName) values('"+name+"',"+quantity+",'"+expireDate+"','"+suplaierName+"')"))
 			return true;
 		return false;
 	}
 	
-	public static boolean updateItem(String name,float sellPrice,float buyPrice,float minBuy,float minSell){
+	protected static boolean updateItem(String name,float sellPrice,float buyPrice,float minBuy,float minSell){
 		return editDataBase("update item set sellPrice="+sellPrice+",buyPrice="+buyPrice+",minBuy="+minBuy+",minSell="+minSell+" where name='"+name+"'");
 	}
 	
-	public static boolean addToItem(String name,float quantity,String expireDate,String suplaierName){
+	protected static boolean addToItem(String name,float quantity,String expireDate,String suplaierName){
 		if(editDataBase("insert into expire_supplier(item,quantity,expireDate,suplaierName) values('"+name+"',"+quantity+",'"+expireDate+"','"+suplaierName+"')")
 				&&editDataBase("update item set quantity=(quantity+"+quantity+") where name='"+name+"'"))
 			return true;
 		return false;
 	}
 	
-	public static boolean deleteItem(String name){
+	protected static boolean deleteItem(String name){
 		if(editDataBase("delete from item where name='"+name+"'")&&editDataBase("delete from expire_supplier where item= '"+name+"'"))
 			return true;
 		return false;
 	}
 	
-	public static boolean deleteQuantity(String name,float quantity){
+	protected static boolean deleteQuantity(String name,float quantity){
 		if(editDataBase("delete from expire_supplier where item='"+name+"'")&&editDataBase("update item set quantity=(quantity+"+quantity+" where name='"+name+"')"))
 			return true;
 		return false;
 	}
-	
-	public static Item getItem(String name){
+	protected static Item getItem(String name){
 		return createItem(select("select * from item where name='"+name+"'"));
 	}
 	
-	public static ArrayList<Item> getAllItems(){
+	protected static ArrayList<Item> getAllItems(){
 		ArrayList<Item>items=new ArrayList<>();
 		ResultSet result=select("select * from item");
 		Item item;
@@ -148,17 +151,32 @@ public abstract class DB {
 		} catch (SQLException|NullPointerException e) {}
 		return null;
 	}
+	public static boolean itemExists(String name) {
+		return editDataBase("update item set name='"+name+"' where name='"+name+"'");
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////Reports/////////////////////////////////////////////////////////
-	public static ArrayList<Report> getDailyReport(){
+	protected static void addReport(String report){
+		editDataBase("insert into report(actionDate,action) values('"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+report+"')");
+	}
+	protected static void addSellReport(String item,String buyer,float itemPrice,float quantity,float quantityPrice){
+		editDataBase("insert into sold_report(date,item,buyer,itemPrice,quantity,quantityPrice) values("
+				+ "'"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+item+"','"+buyer+"',"+itemPrice+","+quantity+","+quantityPrice+")");
+	}
+	protected static void addBuyReport(String item,String seller,float quantity) {
+		editDataBase("insert into baught_report(date,item,seller,itemPrice,quantity,quantityPrice) values("
+				+ "'"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())+"','"+item+"','"+seller+"',(select buyPrice from item where name='"+item+"'),"
+						+ ""+quantity+","+quantity+"*(select buyPrice from item where name='"+item+"'))");
+	}
+	protected static ArrayList<Report> getDailyReport(){
 		return report(LocalDateTime.now().toLocalDate().toString());
 	}
 	
-	public static ArrayList<Report> getMonthlyReport(){
+	protected static ArrayList<Report> getMonthlyReport(){
 		return report(LocalDateTime.now().minusMonths(1).toLocalDate().toString());
 	}
 	
-	public static ArrayList<Report> getYearlyReport(){
+	protected static ArrayList<Report> getYearlyReport(){
 		return report(LocalDateTime.now().minusYears(1).toLocalDate().toString());
 	}
 	
@@ -178,16 +196,16 @@ public abstract class DB {
 		} catch (SQLException|NullPointerException e) {}
 		return null;
 	}
-	
-	public static ArrayList<SoldReport> getSoldReportDay(){
+	/////////////////////////////////////////////////////////////////////////////////////
+	protected static ArrayList<SoldReport> getSoldReportDay(){
 		return soldReport(LocalDateTime.now().toLocalDate().toString());
 	}
 	
-	public static ArrayList<SoldReport> getSoldReportMonth(){
+	protected static ArrayList<SoldReport> getSoldReportMonth(){
 		return soldReport(LocalDateTime.now().minusMonths(1).toLocalDate().toString());
 	}
 	
-	public static ArrayList<SoldReport> getSoldReportYear(){
+	protected static ArrayList<SoldReport> getSoldReportYear(){
 		return soldReport(LocalDateTime.now().minusYears(1).toLocalDate().toString());
 	}
 	
@@ -203,21 +221,21 @@ public abstract class DB {
 	private static SoldReport createSoldReport(ResultSet result) {
 		try {
 			result.next();
-			return new SoldReport(result.getString("date"),result.getString("item"),result.getFloat("itemPrice")
+			return new SoldReport(result.getString("date"),result.getString("item"),result.getString("buyer"),result.getFloat("itemPrice")
 					,result.getFloat("quantity"),result.getFloat("quantityPrice"));
 		} catch (SQLException|NullPointerException e) {}
 		return null;
 	}
-	
-	public static ArrayList<BaughtReport> getBaughtReportDay(){
+	/////////////////////////////////////////////////////////////////
+	protected static ArrayList<BaughtReport> getBaughtReportDay(){
 		return baoughtReport(LocalDateTime.now().toLocalDate().toString());
 	}
 	
-	public static ArrayList<BaughtReport> getBaughtReportMonth(){
+	protected static ArrayList<BaughtReport> getBaughtReportMonth(){
 		return baoughtReport(LocalDateTime.now().minusMonths(1).toLocalDate().toString());
 	}
 	
-	public static ArrayList<BaughtReport> getBaughtReportYear(){
+	protected static ArrayList<BaughtReport> getBaughtReportYear(){
 		return baoughtReport(LocalDateTime.now().minusYears(1).toLocalDate().toString());
 	}
 	
@@ -233,7 +251,7 @@ public abstract class DB {
 	private static BaughtReport createBaughtReport(ResultSet result) {
 		try {
 			result.next();
-			return new BaughtReport(result.getString("date"),result.getString("item"),result.getFloat("itemPrice")
+			return new BaughtReport(result.getString("date"),result.getString("item"),result.getString("seller"),result.getFloat("itemPrice")
 					,result.getFloat("quantity"),result.getFloat("quantityPrice"));
 		} catch (SQLException|NullPointerException e) {}
 		return null;

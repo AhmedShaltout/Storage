@@ -3,11 +3,12 @@ package system;
 public class SoldReport{
 	private String date;
 	private String item;
+	private String buyer;
 	private float itemPrice;
 	private float quantity;
 	private float quantityPrice;
-	public SoldReport(String date, String item, float itemPrice, float quantity, float quantityPrice) {
-		this.date=date;this.item=item;this.itemPrice=itemPrice;this.quantity=quantity;this.quantityPrice=quantityPrice;
+	public SoldReport(String date, String item,String buyer, float itemPrice, float quantity, float quantityPrice) {
+		this.date=date;this.item=item;this.itemPrice=itemPrice;this.quantity=quantity;this.quantityPrice=quantityPrice;this.buyer=buyer;
 	}
 	public String getDate() {
 		return this.date;
@@ -39,5 +40,10 @@ public class SoldReport{
 	public void setQuantityPrice(float quantityPrice) {
 		this.quantityPrice = quantityPrice;
 	}
-	
+	public String getBuyer() {
+		return this.buyer;
+	}
+	public void setBuyer(String buyer) {
+		this.buyer = buyer;
+	}
 }
