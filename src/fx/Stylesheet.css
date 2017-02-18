@@ -77,3 +77,14 @@
 #menu:hover{
 	-fx-text-fill: #40E0D0;
 }
+#label{
+	-fx-text-fill: #2c3e50;
+	-fx-font: 30px serif;
+	-fx-font-weight: bold;
+	
+}
+#smalerLabel{
+	-fx-text-fill: #2c3e50;
+	-fx-font: 20px serif;
+	-fx-font-weight: bold;
+}

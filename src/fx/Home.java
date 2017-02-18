@@ -9,10 +9,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +31,11 @@ public class Home {
 	HBox header, footer;
 	Label info, org_Name;
 	ImageView layoutBackground;
+	///////////////////Login Glass Objects/////////////////////
+	GridPane loginGlass;
+	Label passwordLabel;
+	PasswordField passwordField;
+	Button loginButton;
 	///////////////////Home Glass Objects//////////////////////
 	GridPane homeGlass;
 	Button exitButton, addButton, exchangeButton;
@@ -37,8 +44,6 @@ public class Home {
 	MenuItem dailyAdd, monthlyAdd, yearlyAdd, dailyExchange, monthlyExchange, yearlyExchange,
 			dailyReport, monthlyReport, yearlyReport;
 	SeparatorMenuItem separator1, separator2;
-	///////////////////Add Glass Objects/////////////////////
-	GridPane addGlass;
 	
 	public Home(){
 		///////////////////Header Components/////////////////////
@@ -68,8 +73,15 @@ public class Home {
 		addButton.setId("menu");
 		addButton.setCursor(Cursor.HAND);
 		addButton.setPadding(new Insets(20,30,20,30));
+		addButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				window.close();
+				new AddClass();
+			}
+		});
 		
-		exchangeButton=new Button("اضافه صنف");
+		exchangeButton=new Button("صرف صنف");
 		exchangeButton.setId("menu");
 		exchangeButton.setCursor(Cursor.HAND);
 		exchangeButton.setPadding(new Insets(20,30,20,30));
@@ -126,12 +138,50 @@ public class Home {
 		GridPane.setConstraints(exitButton, 1,1);
 		
 		homeGlass.getChildren().addAll(exitButton, addButton, exchangeButton, reportBar);
-		////////////////////Add Glass Components/////////////////
-		addGlass=new GridPane();
-		addGlass.setId("glass");
-		addGlass.setMaxHeight(550);
-		addGlass.setMaxWidth(1200);
+		///////////////////Login Glass Components////////////////
+		passwordLabel=new Label("أدخل كلمه السر: ");
+		passwordLabel.setId("label");
 		
+		passwordField=new PasswordField();
+		passwordField.setPromptText("ادخل كلمه السر");
+		passwordField.setMinWidth(300);
+		passwordField.setMinHeight(40);
+		passwordField.setAlignment(Pos.CENTER);
+		
+		loginButton=new Button("تسجيل دخول");
+		loginButton.setId("exitButton");
+		loginButton.setCursor(Cursor.HAND);
+		loginButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if(passwordField!=null && passwordField.getText()!="123"){
+					layout.setCenter(homeGlass);
+				}
+			}
+		});
+		/*
+		CheckBox changePassword;
+		
+		changePasswordLabel=new Label("تغيير كلمه السر");
+		changePasswordLabel.setId("smalerLabel"); 
+		
+		changePassword=new CheckBox();
+		changePassword.setAlignment(Pos.BASELINE_RIGHT);
+		*/
+		loginGlass=new GridPane();
+		loginGlass.setId("glass");
+		loginGlass.setMaxHeight(550);
+		loginGlass.setMaxWidth(1200);
+		loginGlass.setVgap(50);
+		loginGlass.setHgap(30);
+		loginGlass.setPadding(new Insets(120,30,30,400));
+		
+		GridPane.setConstraints(passwordField, 0, 0);
+		GridPane.setConstraints(passwordLabel, 1, 0);
+		GridPane.setConstraints(loginButton, 0, 1);
+		
+		loginGlass.getChildren().addAll(passwordField, passwordLabel, loginButton);
 		///////////////////Footer Components/////////////////////
 		footer=new HBox();
 		info=new Label("Copyright © 2017 All Rights Reserved. A.S team.");
@@ -150,7 +200,7 @@ public class Home {
 		layout.setMinHeight(650);
 		layout.setMinWidth(1200);
 		layout.setTop(header);
-		layout.setCenter(homeGlass);
+		layout.setCenter(loginGlass);
 		layout.setBottom(footer);
 		
 		///////////////////Scene Components//////////////////////
