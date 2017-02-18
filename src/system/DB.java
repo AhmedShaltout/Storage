@@ -21,7 +21,6 @@ abstract class DB {
 			return null;
 		}
 	}
-	
 	/**==========================================================================================**/
 	
 	/**responsible for returning values from the database the result can be null**/
@@ -39,8 +38,16 @@ abstract class DB {
 			getConnection().createStatement().execute(sql);
 			return true;
 		} catch (SQLException | NullPointerException e) {
-			System.out.println(e.getMessage());
 			return false;
+		}
+	}
+	public static String getAllowedMac() {
+		ResultSet result=select("select allowedMac from system where id=1");
+		try {
+			result.next();
+			return result.getString("allowedMac");
+		} catch (SQLException |NullPointerException e) {
+			return null;
 		}
 	}
 	///////////////////////////////////Suppliers///////////////////////////////////////////
@@ -81,7 +88,7 @@ abstract class DB {
 		return null;
 	}
 	
-	protected static boolean supplierExists(String name){
+	public static boolean supplierExists(String name){
 		return editDataBase("update supplier set name='"+name+"' where name='"+name+"'");
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
